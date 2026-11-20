@@ -1,7 +1,8 @@
-import { myPreferit, SearchSquad } from '../funzioni/funzioni.js'
-import { stampaCard } from '../funzioni/funzioni.js'
+import { myPreferit} from '../funzioni/funzioni.js'
+import { SearchSquad} from '../funzioni/funzioni.js'
+import { stampaCard } from '../creatElement/creatElement.js'
 import { listaSquadre } from '../funzioni/funzioni.js'
-import { cardPreferit } from '../funzioni/funzioni.js'
+import { cardPreferit } from '../creatElement/creatElement.js'
 const messContainerPref = document.querySelector('#messContainerPref')
 const textSquad = document.querySelector('#textSquad')
 const btnSearch = document.querySelector('#btnSearch')
@@ -44,9 +45,6 @@ textSquad.addEventListener('input', () => {
     }, 450);
 });
 
-
-
-
 async function eseguiRicerca(inputUser) {
     const inputUtente = inputUser.trim();
     if (inputUtente === "") {
@@ -67,7 +65,9 @@ async function eseguiRicerca(inputUser) {
             spinnerSearch.classList.add('d-none');
         }
     }
-}
+}    
+
+
 
 const checkNativeSwitch = document.querySelector('#checkNativeSwitch');
 checkNativeSwitch.addEventListener('change', (e) => {
@@ -83,8 +83,6 @@ checkNativeSwitch.addEventListener('change', (e) => {
         myHtml.setAttribute('data-bs-theme', 'dark');
     }
 });
-
-
 
 function aggiornaPreferiti() {
     const squadreFiltrate = sportSelezionato
@@ -104,7 +102,6 @@ function aggiornaPreferiti() {
         messContainerPref.classList.add('d-none');
     }
 }
-
 
 let sportSelezionato = null;
 btnsFilter.forEach((btn) => {
@@ -129,5 +126,6 @@ btnsFilter.forEach((b) => b.classList.remove('active'));
     });
 });
 
-console.log('myPreferit:', myPreferit);
-console.log('sportSelezionato:', sportSelezionato);
+
+
+
