@@ -8,13 +8,16 @@ body{
     margin: 0;
 }
 
-.btn-personal{
-    background-color: white;
-    color: #193366;
+.btn-personal {
+    background-color: #193366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 4px;
 }
 
 .btn-personal:hover {
-    background-color: #193366;
+    background-color: #2e436b;
     color: white;
 }
 
@@ -23,6 +26,7 @@ header{
     color: white;
     padding: 10px;
     width: 100%;
+   
 
     p {
         opacity: 50%;
@@ -35,4 +39,25 @@ header{
 
 #containerCardPref > article:last-of-type{
     flex: 1 !important;
+}
+
+.btnHeader {
+    background-color: aliceblue;
+    border: 0;
+    border-radius: 5px;
+    padding: 3px 8px;
+}
+
+.btnHeader:hover {
+    background-color: antiquewhite;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.13);
+
 }

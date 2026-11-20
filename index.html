@@ -1,30 +1,46 @@
 <!DOCTYPE html>
-<html lang="initial-scale">
+<html lang="it">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-yEPZ7jP9S0QKiUQ0m3jjsO4ProIW7wvR9gXkI7JOGa2XVsw53Yke2bsdkBbjmmiX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <title>SportHub</title>
     <script type="module" src="assets/js/script.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-    <header>
+    <header class="sticky-top border-bottom py-3">
         <div class="text-center">
             <h1>SportsHub</h1>
             <p class="fs-6">Cerca una squadra, scopri prossime partite e ultimi risultati.</p>
             <div class="d-flex justify-content-center align-items-center">
-                <input class="col-5 me-2" id="textSquad" type="text" placeholder="es: Arsenal, juventus">
-                <button id="btnSearch" class="btn-personal">Cerca</button>
+                <input class="col-5 me-2 form-control w-50" id="textSquad" type="text" placeholder="es: Arsenal, juventus">
+                <button id="btnSearch" class=" btnHeader "><i class="fa-brands fa-sistrix text-dark"></i></button>
             </div>
-            
+        </div>
+        <div class="form-check form-switch d-md-block  ">
+            <label class="form-check-label" for="checkNativeSwitch"><i id="toogleDark"
+                    class=" text-dark align-content-center mx-1 fa-solid fa-moon"></i></label>
+            <input class="bg-dark form-check-input " type="checkbox" value="" id="checkNativeSwitch" switch>
         </div>
 
     </header>
     <main class="container">
+
+        <section>
+            <div class="mt-3 d-flex flex-wrap justify-content-center align-items-center gap-1">
+                <button class="btnFilter btn  btn-primary active" type="button">Tutti</button>
+                <button class="btnFilter btn btn-primary" type="button">Basketball</button>
+                <button class="btnFilter btn  btn-primary" type="button">Soccer</button>
+                <button class="btnFilter btn btn-primary" type="button">American Football</button>
+                <button class="btnFilter btn  btn-primary" type="button">Tennis</button>
+                <button class="btnFilter btn  btn-primary" type="button">Motorsport</button>
+            </div>
+        </section>
+
         <section class=" mt-5">
             <h3><span>⭐</span> Le tue squadre preferite</h3>
             <p id="messContainerPref" class="d-none">Nessuna squadra aggiunta ai preferiti</p>
@@ -32,13 +48,13 @@
             </div>
         </section>
         <section class=" mt-3">
-            <h3>Squadre Trovate</h3>
-            <p id="messContainerSearch" class="d-none">Effettua una ricerca qui sopra per cercare le tue squadre</p>
+            <h3>⚽ Squadre Trovate</h3>
+            <p id="messContainerSearch">Effettua una ricerca sopra per cercare le tue squadre</p>
             <div id="containerCardSearch" class="row mt-4">
                 <button id="spinnerSearch" class="btn btn-primary d-none" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span role="status">Loading...</span>
-            </button>
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button>
             </div>
         </section>
     </main>

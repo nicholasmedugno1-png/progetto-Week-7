@@ -1,24 +1,28 @@
 
 
-const messContainerPref = document.querySelector('#messContainerPref')
+
+
 const containerCardPref = document.querySelector('#containerCardPref')
 const urlApi = "https://www.thesportsdb.com/api/v1/json/123";
 export const listaSquadre = [];
 export const myPreferit = []
 
 class Team {
-    constructor(_idTeam, _strBadge, _strTeam, _strLeague, _id) {
+    constructor(_idTeam, _strBadge, _strTeam, _strLeague, _strSport, _id) {
         this.id = _id ?? crypto.randomUUID()
         this.idTeam = _idTeam
         this.strBadge = _strBadge
         this.strTeam = _strTeam
         this.strLeague = _strLeague
+        this.strSport = _strSport
     }
 }
 const salvati = JSON.parse(localStorage.getItem('squadrePreferite')) ?? []
 myPreferit.push(
-    ...salvati.map(squad => new Team(squad.idTeam, squad.strBadge, squad.strTeam, squad.strLeague, squad.id))
+    ...salvati.map(squad => new Team(squad.idTeam, squad.strBadge, squad.strTeam, squad.strLeague, squad.strSport, squad.id))
 )
+
+
 
 export const SearchSquad = async (inputUser) => {
     try {
@@ -99,7 +103,7 @@ export function stampaCard(array, contenitorePadre) {
         myDescri.textContent = `${item.strLeague}`
         const btnAggiungi = document.createElement('button');
         btnAggiungi.textContent = 'Aggiungi ai preferiti'
-        btnAggiungi.classList.add('btn', 'btn-personal')
+        btnAggiungi.classList.add('btn-personal')
         myDivCard.append(myDivInterno, myTitleProd, myDescri, btnAggiungi);
         myArt.appendChild(myDivCard);
         contenitorePadre.appendChild(myArt)
@@ -111,9 +115,10 @@ export function stampaCard(array, contenitorePadre) {
             const giaPresente = myPreferit.some(t => t.idTeam === item.idTeam)
             if (giaPresente) return
 
-            myPreferit.push(new Team(item.idTeam, item.strBadge, item.strTeam, item.strLeague))
+            myPreferit.push(new Team(item.idTeam, item.strBadge, item.strTeam, item.strLeague, item.strSport))
+            messContainerPref?.classList.add('d-none');
             cardPreferit(myPreferit, containerCardPref)
-            localStorage.setItem('squadrePreferite', JSON.stringify(myPreferit));
+            salve();
         })
 
 
@@ -179,18 +184,17 @@ export function stampaCard(array, contenitorePadre) {
             myScontriBefore.textContent = ultimiEventi.length === 0
                 ? 'Nessun risultato disponibile'
                 : ultimiEventi
-                    .map(ev => `${ev.strEvent}: ${ev.intHomeScore} - ${ev.intAwayScore}`)
-
+                    .map(event => `${event.strEvent}: ${event.intHomeScore} - ${event.intAwayScore}`)
 
             myScontriAfter.textContent = prossimi.length === 0
                 ? 'Nessuna partita in programma'
                 : prossimi
-                    .map(ev => `${ev.dateEvent}: ${ev.strEvent}`)
-
+                    .map(event => `${event.dateEvent}: ${event.strEvent}`)
         })
-
     })
 }
+
+
 
 export function cardPreferit(array, contenitorePadre) {
     contenitorePadre.textContent = '';
@@ -223,7 +227,7 @@ export function cardPreferit(array, contenitorePadre) {
 
         const btnElimina = document.createElement('button');
         btnElimina.type = 'button';
-        btnElimina.textContent = 'Elimina';
+        btnElimina.textContent = '🗑️ Rimuovi';
         btnElimina.classList.add('btn', 'btn-personal', 'w-100');
 
         btnElimina.addEventListener('click', (e) => {
@@ -233,18 +237,14 @@ export function cardPreferit(array, contenitorePadre) {
             if (indice !== -1) {
                 myPreferit.splice(indice, 1);
             }
+            
+            if (myPreferit.length === 0) {
+                messContainerPref?.classList.remove('d-none');
+            } 
             salve()
-
-           if (myPreferit.length === 0) {
-    messContainerPref?.classList.remove('d-none');
-} else {
-    messContainerPref?.classList.add('d-none');
-    cardPreferit(myPreferit, containerCardPref);
-}
-
             cardPreferit(myPreferit, contenitorePadre);
         });
-
+        
         myDivCard.append(myDivInterno, myTitleProd, myDescri, btnElimina);
         myArt.appendChild(myDivCard);
         contenitorePadre.appendChild(myArt);
@@ -298,30 +298,32 @@ export function cardPreferit(array, contenitorePadre) {
 
             if (caricato) return
             caricato = true
-
-            
-
             myScontriBefore.textContent = 'Caricamento...';
             const ultimiEventi = await ultimiScontriGiocati(item.idTeam);
             myScontriBefore.textContent = ultimiEventi.length === 0
                 ? 'Nessun risultato disponibile'
                 : ultimiEventi
                     .map(event => `${event.strEvent}: ${event.intHomeScore} - ${event.intAwayScore}`)
-                    
 
-
-            
             const prossimi = await prossimiScontri(item.idTeam);
             myScontriAfter.textContent = prossimi.length === 0
                 ? 'Nessuna partita in programma'
                 : prossimi
                     .map(event => `${event.dateEvent}: ${event.strEvent}`)
-                    
-
         })
     });
 }
+
 function salve() {
     localStorage.setItem('squadrePreferite', JSON.stringify(myPreferit));
 }
+
+
+
+
+
+
+
+
+
 
