@@ -1,7 +1,7 @@
 
 
 
-
+const myError = document.querySelector('#error')
 const urlApi = "https://www.thesportsdb.com/api/v1/json/123";
 export const listaSquadre = [];
 export const myPreferit = []
@@ -37,7 +37,8 @@ export const SearchSquad = async (inputUser) => {
         listaSquadre.push(...dati.teams ?? []);
         console.log(listaSquadre);
     } catch (errore) {
-        alert("Problema nel caricamento delle squadre");
+        myError.classList.remove('d-none')
+        myError.textContent = 'Problema nel caricamento delle squadre';
     }
 };
 
@@ -52,7 +53,8 @@ export const ultimiScontriGiocati = async (idTeam) => {
         const dati = await response.json();
         return dati.results ?? [];
     } catch (errore) {
-        alert("Problema nel caricamento delle squadre");
+        myError.classList.remove('d-none')
+        myError.textContent = 'Problema nel caricamento delle squadre';
         return [];
     }
 };
@@ -68,7 +70,8 @@ export const prossimiScontri = async (idTeam) => {
         const dati = await response.json();
         return dati.events ?? [];
     } catch (errore) {
-        alert("Problema nel caricamento delle squadre");
+        myError.classList.remove('d-none')
+        myError.textContent = 'Problema nel caricamento delle squadre';
         return [];
     }
 };
