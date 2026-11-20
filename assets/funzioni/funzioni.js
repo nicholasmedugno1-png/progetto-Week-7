@@ -1,0 +1,327 @@
+
+
+const messContainerPref = document.querySelector('#messContainerPref')
+const containerCardPref = document.querySelector('#containerCardPref')
+const urlApi = "https://www.thesportsdb.com/api/v1/json/123";
+export const listaSquadre = [];
+export const myPreferit = []
+
+class Team {
+    constructor(_idTeam, _strBadge, _strTeam, _strLeague, _id) {
+        this.id = _id ?? crypto.randomUUID()
+        this.idTeam = _idTeam
+        this.strBadge = _strBadge
+        this.strTeam = _strTeam
+        this.strLeague = _strLeague
+    }
+}
+const salvati = JSON.parse(localStorage.getItem('squadrePreferite')) ?? []
+myPreferit.push(
+    ...salvati.map(squad => new Team(squad.idTeam, squad.strBadge, squad.strTeam, squad.strLeague, squad.id))
+)
+
+export const SearchSquad = async (inputUser) => {
+    try {
+        const response = await fetch(`${urlApi}/searchteams.php?t=${encodeURIComponent(inputUser)}`);
+
+        if (!response.ok) {
+            throw new Error("Errore HTTP: " + response.status);
+        }
+
+        const dati = await response.json();
+
+        listaSquadre.length = 0;
+        listaSquadre.push(...dati.teams ?? []);
+        console.log(listaSquadre);
+    } catch (errore) {
+        console.error("Problema nel caricamento:", errore);
+    }
+};
+
+export const ultimiScontriGiocati = async (idTeam) => {
+    try {
+        const response = await fetch(`${urlApi}/eventslast.php?id=${idTeam}`);
+
+        if (!response.ok) {
+            throw new Error("Errore HTTP: " + response.status);
+        }
+
+        const dati = await response.json();
+        return dati.results ?? [];
+    } catch (errore) {
+        console.error("Problema nel caricamento:", errore);
+        return [];
+    }
+};
+
+export const prossimiScontri = async (idTeam) => {
+    try {
+        const response = await fetch(`${urlApi}/eventsnext.php?id=${idTeam}`);
+
+        if (!response.ok) {
+            throw new Error("Errore HTTP: " + response.status);
+        }
+
+        const dati = await response.json();
+        return dati.events ?? [];
+    } catch (errore) {
+        console.error("Problema nel caricamento:", errore);
+        return [];
+    }
+};
+
+
+
+
+
+export function stampaCard(array, contenitorePadre) {
+    contenitorePadre.textContent = ''
+    array.forEach((item, i) => {
+        const myArt = document.createElement('article');
+        myArt.classList.add('col-12', 'col-md-6', 'mb-3')
+
+        const myDivCard = document.createElement('div');
+        myDivCard.classList.add('card', 'p-3', 'd-flex', 'row', 'g-1', 'text-center')
+        const myDivInterno = document.createElement('div');
+        myDivInterno.classList.add('mb-2', 'rounded');
+        myDivInterno.style.height = '50%';
+        const myImgPro = document.createElement('img');
+        myImgPro.classList.add('w-50', 'h-50', 'object-fit-contain', 'rounded');
+        myImgPro.src = `${item.strBadge}`
+        myDivInterno.appendChild(myImgPro)
+
+
+        const myTitleProd = document.createElement('h3');
+        myTitleProd.classList.add('fs-5', 'fw-bold');
+        myTitleProd.textContent = `${item.strTeam}`
+        const myDescri = document.createElement('p');
+        myDescri.classList.add('text-muted',);
+        myDescri.textContent = `${item.strLeague}`
+        const btnAggiungi = document.createElement('button');
+        btnAggiungi.textContent = 'Aggiungi ai preferiti'
+        btnAggiungi.classList.add('btn', 'btn-personal')
+        myDivCard.append(myDivInterno, myTitleProd, myDescri, btnAggiungi);
+        myArt.appendChild(myDivCard);
+        contenitorePadre.appendChild(myArt)
+
+        btnAggiungi.addEventListener('click', (e) => {
+            e.stopPropagation()
+
+
+            const giaPresente = myPreferit.some(t => t.idTeam === item.idTeam)
+            if (giaPresente) return
+
+            myPreferit.push(new Team(item.idTeam, item.strBadge, item.strTeam, item.strLeague))
+            cardPreferit(myPreferit, containerCardPref)
+            localStorage.setItem('squadrePreferite', JSON.stringify(myPreferit));
+        })
+
+
+
+        const myModal = document.createElement('div')
+        myModal.classList.add('col-12', 'card', 'text-center', 'd-none', 'mt-3', 'p-3')
+
+        const myModalDialog = document.createElement('div');
+        const myModalContent = document.createElement('div');
+        //HEADER
+        const myModalHead = document.createElement('div');
+        myModalHead.classList.add('modal-header');
+        const myTitleModal = document.createElement('h2');
+        myTitleModal.classList.add('modal-title', 'fs-5', 'fw-bold', 'text-primary');
+        myTitleModal.textContent = `${item.strTeam}`;
+
+        const myModalBody = document.createElement('div')
+        myModalBody.classList.add('row', 'g-3', 'text-start', 'mt-1')
+
+
+        const mydivAfter = document.createElement('div');
+        mydivAfter.classList.add('col-12', 'col-md-6');
+        const titeAfter = document.createElement('span')
+        titeAfter.classList.add('d-block', 'fw-bold', 'mb-1')
+        titeAfter.textContent = 'Prossime partite'
+        const myScontriAfter = document.createElement('p');
+        myScontriAfter.classList.add('text-muted', 'myClassModal');
+        mydivAfter.append(titeAfter, myScontriAfter)
+
+        const mydivBefore = document.createElement('div');
+        mydivBefore.classList.add('col-12', 'col-md-6');
+        const titeBefore = document.createElement('span')
+        titeBefore.classList.add('d-block', 'fw-bold', 'mb-1')
+        titeBefore.textContent = 'Ultimi risultati'
+        const myScontriBefore = document.createElement('p');
+        myScontriBefore.classList.add('text-muted', 'myClassModal');
+        mydivBefore.append(titeBefore, myScontriBefore)
+
+        myModal.appendChild(myModalDialog)
+        myModalDialog.appendChild(myModalContent)
+        myModalContent.append(myModalHead, myModalBody)
+        myModalHead.append(myTitleModal);
+        myModalBody.append(mydivAfter, mydivBefore)
+        myArt.after(myModal);
+
+
+        let caricato = false
+
+        myDivCard.addEventListener('click', async (e) => {
+            if (e.target.closest('button')) return
+            myModal.classList.toggle('d-none')
+
+            if (caricato) return
+            caricato = true
+
+
+
+            const [ultimiEventi, prossimi] = await Promise.all([
+                ultimiScontriGiocati(item.idTeam),
+                prossimiScontri(item.idTeam)
+            ])
+
+            myScontriBefore.textContent = ultimiEventi.length === 0
+                ? 'Nessun risultato disponibile'
+                : ultimiEventi
+                    .map(ev => `${ev.strEvent}: ${ev.intHomeScore} - ${ev.intAwayScore}`)
+
+
+            myScontriAfter.textContent = prossimi.length === 0
+                ? 'Nessuna partita in programma'
+                : prossimi
+                    .map(ev => `${ev.dateEvent}: ${ev.strEvent}`)
+
+        })
+
+    })
+}
+
+export function cardPreferit(array, contenitorePadre) {
+    contenitorePadre.textContent = '';
+
+    array.forEach((item) => {
+
+        const myArt = document.createElement('article');
+        myArt.classList.add('col-12', 'col-md-6', 'col-xl-4', 'mb-3');
+
+        const myDivCard = document.createElement('div');
+        myDivCard.classList.add('card', 'p-3', 'text-center', 'd-flex', 'flex-column', 'justify-content-between');
+
+        const myDivInterno = document.createElement('div');
+        myDivInterno.classList.add('mb-2', 'rounded', 'd-flex', 'justify-content-center', 'align-items-center');
+        myDivInterno.style.height = '120px';
+
+        const myImgPro = document.createElement('img');
+        myImgPro.classList.add('mw-100', 'mh-100', 'object-fit-contain', 'rounded');
+        myImgPro.src = `${item.strBadge}`;
+        myImgPro.alt = `${item.strTeam}`;
+        myDivInterno.appendChild(myImgPro);
+
+        const myTitleProd = document.createElement('h3');
+        myTitleProd.classList.add('fs-5', 'fw-bold', 'mb-1');
+        myTitleProd.textContent = `${item.strTeam}`;
+
+        const myDescri = document.createElement('p');
+        myDescri.classList.add('text-muted', 'mb-3');
+        myDescri.textContent = `${item.strLeague}`;
+
+        const btnElimina = document.createElement('button');
+        btnElimina.type = 'button';
+        btnElimina.textContent = 'Elimina';
+        btnElimina.classList.add('btn', 'btn-personal', 'w-100');
+
+        btnElimina.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const indice = myPreferit.findIndex(team => team.id === item.id);
+            if (indice !== -1) {
+                myPreferit.splice(indice, 1);
+            }
+            salve()
+
+           if (myPreferit.length === 0) {
+    messContainerPref?.classList.remove('d-none');
+} else {
+    messContainerPref?.classList.add('d-none');
+    cardPreferit(myPreferit, containerCardPref);
+}
+
+            cardPreferit(myPreferit, contenitorePadre);
+        });
+
+        myDivCard.append(myDivInterno, myTitleProd, myDescri, btnElimina);
+        myArt.appendChild(myDivCard);
+        contenitorePadre.appendChild(myArt);
+
+
+        const myModal = document.createElement('div');
+        myModal.classList.add('col-12', 'card', 'text-center', 'd-none', 'my-3',);
+
+        const myModalDialog = document.createElement('div');
+        const myModalContent = document.createElement('div');
+
+        const myModalHead = document.createElement('div');
+        myModalHead.classList.add('modal-header');
+
+        const myTitleModal = document.createElement('h2');
+        myTitleModal.classList.add('modal-title', 'fs-5', 'fw-bold', 'text-primary');
+        myTitleModal.textContent = `${item.strTeam}`;
+
+        const myModalBody = document.createElement('div');
+        myModalBody.classList.add('row', 'g-3', 'text-start', 'mt-1');
+
+        const mydivAfter = document.createElement('div');
+        mydivAfter.classList.add('col-12', 'col-md-6');
+        const titeAfter = document.createElement('span');
+        titeAfter.classList.add('d-block', 'fw-bold', 'mb-1');
+        titeAfter.textContent = 'Prossime partite';
+        const myScontriAfter = document.createElement('p');
+        myScontriAfter.classList.add('text-muted', 'myClassModal');
+        mydivAfter.append(titeAfter, myScontriAfter);
+
+        const mydivBefore = document.createElement('div');
+        mydivBefore.classList.add('col-12', 'col-md-6');
+        const titeBefore = document.createElement('span');
+        titeBefore.classList.add('d-block', 'fw-bold', 'mb-1');
+        titeBefore.textContent = 'Ultimi risultati';
+        const myScontriBefore = document.createElement('p');
+        myScontriBefore.classList.add('text-muted', 'myClassModal');
+        mydivBefore.append(titeBefore, myScontriBefore);
+
+        myModal.appendChild(myModalDialog);
+        myModalDialog.appendChild(myModalContent);
+        myModalContent.append(myModalHead, myModalBody);
+        myModalHead.append(myTitleModal);
+        myModalBody.append(mydivAfter, mydivBefore);
+
+        myArt.after(myModal);
+        let caricato = false;
+        myDivCard.addEventListener('click', async (e) => {
+            if (e.target.closest('button')) return
+            myModal.classList.toggle('d-none')
+
+            if (caricato) return
+            caricato = true
+
+            
+
+            myScontriBefore.textContent = 'Caricamento...';
+            const ultimiEventi = await ultimiScontriGiocati(item.idTeam);
+            myScontriBefore.textContent = ultimiEventi.length === 0
+                ? 'Nessun risultato disponibile'
+                : ultimiEventi
+                    .map(event => `${event.strEvent}: ${event.intHomeScore} - ${event.intAwayScore}`)
+                    
+
+
+            
+            const prossimi = await prossimiScontri(item.idTeam);
+            myScontriAfter.textContent = prossimi.length === 0
+                ? 'Nessuna partita in programma'
+                : prossimi
+                    .map(event => `${event.dateEvent}: ${event.strEvent}`)
+                    
+
+        })
+    });
+}
+function salve() {
+    localStorage.setItem('squadrePreferite', JSON.stringify(myPreferit));
+}
+

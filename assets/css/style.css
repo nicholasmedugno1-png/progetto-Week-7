@@ -13,6 +13,11 @@ body{
     color: #193366;
 }
 
+.btn-personal:hover {
+    background-color: #193366;
+    color: white;
+}
+
 header{
     background-color: #193366;
     color: white;
@@ -22,4 +27,12 @@ header{
     p {
         opacity: 50%;
     }
+}
+
+.myClassModal {
+    border-bottom: 2px solid #193366 ;
+}
+
+#containerCardPref > article:last-of-type{
+    flex: 1 !important;
 }
