@@ -1,0 +1,25 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+}
+
+.btn-personal{
+    background-color: white;
+    color: #193366;
+}
+
+header{
+    background-color: #193366;
+    color: white;
+    padding: 10px;
+    width: 100%;
+
+    p {
+        opacity: 50%;
+    }
+}

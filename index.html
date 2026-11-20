@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="initial-scale">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.9/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-yEPZ7jP9S0QKiUQ0m3jjsO4ProIW7wvR9gXkI7JOGa2XVsw53Yke2bsdkBbjmmiX" crossorigin="anonymous">
+    <title>SportHub</title>
+    <script type="module" src="assets/js/script.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="text-center">
+            <h1>SportsHub</h1>
+        <p class="fs-6">Cerca una squadra, scopri prossime partite e ultimi risultati.</p>
+        <div class="d-flex justify-content-center align-items-center">
+            <input class="col-5 me-2" id="textSquad" type="text" placeholder="es: Arsenal, juventus">
+            <button id="btnSearch" class="btn-personal">Cerca</button>
+        </div>
+        </div>
+        
+    </header>
+    <main class="container">
+        <section class="row mt-5">
+            <h3><span>⭐</span> Le tue squadre preferite</h3>
+            <div id="containerCardPref">
+                <p id="messPrefNull">non ci sono squadre ai preferiti</p>
+            </div>
+        </section>
+        <section class="row mt-3">
+            <h3>Squadre Trovate</h3>
+            <div id="containerCardSearch">
+                <p id="messContainerCardSearch">Inizia cercando una squadra qui sopra</p>
+            </div>
+        </section>
+    </main>
+    
+</body>
+</html>
