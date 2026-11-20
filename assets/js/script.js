@@ -11,11 +11,12 @@ const containerCardPref = document.querySelector('#containerCardPref')
 const spinnerSearch = document.querySelector('#spinnerSearch')
 const messContainerSearch = document.querySelector('#messContainerSearch')
 const btnsFilter = document.querySelectorAll('.btnFilter');
+const myIcon = document.querySelector('#toogleDark');
 
 window.addEventListener('load', () => {
     textSquad.value = '';
     cardPreferit(myPreferit, containerCardPref);
-
+    applicaTema(localStorage.getItem('tema') ?? 'light');
     if (myPreferit.length === 0) {
         messContainerPref?.classList.remove('d-none');
     } 
@@ -70,19 +71,21 @@ async function eseguiRicerca(inputUser) {
 
 
 const checkNativeSwitch = document.querySelector('#checkNativeSwitch');
-checkNativeSwitch.addEventListener('change', (e) => {
-    const myIcon = document.querySelector('#toogleDark')
-    const myHtml = document.querySelector('html')
-    if (myHtml.getAttribute('data-bs-theme') === 'dark') {
-        myHtml.setAttribute('data-bs-theme', 'light');
-        myIcon.classList.add('fa-moon', 'text-dark');
-        myIcon.classList.remove('fa-sun')
-    } else {
-        myIcon.classList.add('fa-sun')
-        myIcon.classList.remove('fa-moon', 'text-dark');
-        myHtml.setAttribute('data-bs-theme', 'dark');
-    }
+
+checkNativeSwitch.addEventListener('change', () => {
+    const tema = checkNativeSwitch.checked ? 'dark' : 'light';
+    localStorage.setItem('tema', tema);
+    applicaTema(tema);
 });
+
+function applicaTema(tema) {
+    document.documentElement.setAttribute('data-bs-theme', tema);
+    checkNativeSwitch.checked = tema === 'dark';
+
+    myIcon.classList.toggle('fa-moon', tema === 'light');
+    myIcon.classList.toggle('fa-sun', tema === 'dark');
+    myIcon.classList.toggle('text-dark', tema === 'light');
+}
 
 function aggiornaPreferiti() {
     const squadreFiltrate = sportSelezionato

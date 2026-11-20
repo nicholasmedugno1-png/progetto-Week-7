@@ -138,7 +138,7 @@ export function stampaCard(array, contenitorePadre) {
         myDivInterno.classList.add('mb-2', 'rounded');
         myDivInterno.style.height = '50%';
         const myImgPro = document.createElement('img');
-        myImgPro.classList.add('w-50', 'h-50', 'object-fit-contain', 'rounded');
+        myImgPro.classList.add('w-25', 'h-25', 'object-fit-contain', 'rounded');
         myImgPro.src = `${item.strBadge}`
         myDivInterno.appendChild(myImgPro)
 

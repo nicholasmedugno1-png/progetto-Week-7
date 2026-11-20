@@ -52,10 +52,6 @@ header{
     background-color: antiquewhite;
 }
 
-.btnFilter {
-    font-size:10px;
-}
-
 .card {
     transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
