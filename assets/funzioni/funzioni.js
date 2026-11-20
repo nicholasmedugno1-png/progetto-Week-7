@@ -37,7 +37,7 @@ export const SearchSquad = async (inputUser) => {
         listaSquadre.push(...dati.teams ?? []);
         console.log(listaSquadre);
     } catch (errore) {
-        console.error("Problema nel caricamento:", errore);
+        alert("Problema nel caricamento delle squadre");
     }
 };
 
@@ -52,7 +52,7 @@ export const ultimiScontriGiocati = async (idTeam) => {
         const dati = await response.json();
         return dati.results ?? [];
     } catch (errore) {
-        console.error("Problema nel caricamento:", errore);
+        alert("Problema nel caricamento delle squadre");
         return [];
     }
 };
@@ -68,7 +68,7 @@ export const prossimiScontri = async (idTeam) => {
         const dati = await response.json();
         return dati.events ?? [];
     } catch (errore) {
-        console.error("Problema nel caricamento:", errore);
+        alert("Problema nel caricamento delle squadre");
         return [];
     }
 };
