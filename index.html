@@ -18,10 +18,18 @@
             <h1>SportsHub</h1>
             <p class="fs-6">Cerca una squadra, scopri prossime partite e ultimi risultati.</p>
             <div class="d-flex justify-content-center align-items-center">
-                <input class="col-5 me-2 form-control w-50" id="textSquad" type="text"
-                    placeholder="es: Arsenal, juventus">
-                <button id="btnSearch" class=" btnHeader "><i class="fa-brands fa-sistrix text-dark"></i></button>
-            </div>
+    <div class="position-relative w-50 me-2">
+        <input class="form-control pe-5" id="textSquad" type="text"
+            placeholder="es: Arsenal, juventus">
+        <button id="btnClear" type="button"
+            class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-decoration-none text-secondary d-none"
+            aria-label="Svuota campo di ricerca">
+        ❌</button>
+    </div>
+    <button id="btnSearch" class="btnHeader">
+        <i class="fa-brands fa-sistrix text-dark"></i>
+    </button>
+</div>
         </div>
         <div class="form-check form-switch d-md-block  ">
             <label class="form-check-label" for="checkNativeSwitch"><i id="toogleDark"

@@ -21,26 +21,38 @@ myPreferit.push(
     ...salvati.map(squad => new Team(squad.idTeam, squad.strBadge, squad.strTeam, squad.strLeague, squad.strSport, squad.id))
 )
 
-
-
 export const SearchSquad = async (inputUser) => {
     try {
         const response = await fetch(`${urlApi}/searchteams.php?t=${encodeURIComponent(inputUser)}`);
 
         if (!response.ok) {
-            throw new Error("Errore HTTP: " + response.status);
+            const errore = new Error("Errore HTTP: " + response.status);
+            errore.status = response.status;
+            throw errore;
         }
 
         const dati = await response.json();
 
         listaSquadre.length = 0;
         listaSquadre.push(...dati.teams ?? []);
-        console.log(listaSquadre);
     } catch (errore) {
-        myError.classList.remove('d-none')
-        myError.textContent = 'Problema nel caricamento delle squadre';
+        listaSquadre.length = 0;
+        myError.classList.remove('d-none');
+
+         if (errore.status === 404) {
+            myError.textContent = 'Risorsa non trovata';
+        } else if (errore.status === 400) {
+            myError.textContent = 'Richiesta non valida';
+        } else if (errore.status >= 500) {
+            myError.textContent = 'Errore del server: riprova più tardi';
+        }else if (errore instanceof TypeError) {
+            myError.textContent = 'Troppe richieste o server non raggiungibile: riprova tra un minuto';
+        } else {
+            myError.textContent = 'Problema nel caricamento delle squadre';
+        }
     }
 };
+
 
 export const ultimiScontriGiocati = async (idTeam) => {
     try {

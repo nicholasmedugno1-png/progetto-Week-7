@@ -169,85 +169,89 @@ export function stampaCard(array, contenitorePadre) {
             save();
         })
 
+            const myModal = document.createElement('div')
+                     myModal.classList.add('col-12', 'card', 'text-center', 'd-none', 'mt-3', 'p-3')
+             
+                     const myModalDialog = document.createElement('div');
+                     const myModalContent = document.createElement('div');
+                     //HEADER
+                     const myModalHead = document.createElement('div');
+                     myModalHead.classList.add('modal-header');
+                     const myTitleModal = document.createElement('h2');
+                     myTitleModal.classList.add('modal-title', 'fs-5', 'fw-bold', 'text-primary');
+                     myTitleModal.textContent = `${item.strTeam}`;
+             
+                     const myModalBody = document.createElement('div')
+                     myModalBody.classList.add('row', 'g-3', 'text-start', 'mt-1')
+             
+             
+                     const mydivAfter = document.createElement('div');
+                     mydivAfter.classList.add('col-12', 'col-md-6');
+                     const titeAfter = document.createElement('span')
+                     titeAfter.classList.add('d-block', 'fw-bold', 'mb-1')
+                     titeAfter.textContent = 'Prossime partite'
+                     const myScontriAfter = document.createElement('p');
+                     myScontriAfter.classList.add('text-muted', 'myClassModal');
+                     mydivAfter.append(titeAfter, myScontriAfter)
+             
+                     const mydivBefore = document.createElement('div');
+                     mydivBefore.classList.add('col-12', 'col-md-6');
+                     const titeBefore = document.createElement('span')
+                     titeBefore.classList.add('d-block', 'fw-bold', 'mb-1')
+                     titeBefore.textContent = 'Ultimi risultati'
+                     const myScontriBefore = document.createElement('p');
+                     myScontriBefore.classList.add('text-muted', 'myClassModal');
+                     mydivBefore.append(titeBefore, myScontriBefore)
+                     myModal.appendChild(myModalDialog)
+                     myModalDialog.appendChild(myModalContent)
+                     myModalContent.append(myModalHead, myModalBody)
+                     myModalHead.append(myTitleModal);
+                     myModalBody.append(mydivAfter, mydivBefore)
+                     myArt.after(myModal);
 
-
-        const myModal = document.createElement('div')
-        myModal.classList.add('col-12', 'card', 'text-center', 'd-none', 'mt-3', 'p-3')
-
-        const myModalDialog = document.createElement('div');
-        const myModalContent = document.createElement('div');
-        //HEADER
-        const myModalHead = document.createElement('div');
-        myModalHead.classList.add('modal-header');
-        const myTitleModal = document.createElement('h2');
-        myTitleModal.classList.add('modal-title', 'fs-5', 'fw-bold', 'text-primary');
-        myTitleModal.textContent = `${item.strTeam}`;
-
-        const myModalBody = document.createElement('div')
-        myModalBody.classList.add('row', 'g-3', 'text-start', 'mt-1')
-
-
-        const mydivAfter = document.createElement('div');
-        mydivAfter.classList.add('col-12', 'col-md-6');
-        const titeAfter = document.createElement('span')
-        titeAfter.classList.add('d-block', 'fw-bold', 'mb-1')
-        titeAfter.textContent = 'Prossime partite'
-        const myScontriAfter = document.createElement('p');
-        myScontriAfter.classList.add('text-muted', 'myClassModal');
-        mydivAfter.append(titeAfter, myScontriAfter)
-
-        const mydivBefore = document.createElement('div');
-        mydivBefore.classList.add('col-12', 'col-md-6');
-        const titeBefore = document.createElement('span')
-        titeBefore.classList.add('d-block', 'fw-bold', 'mb-1')
-        titeBefore.textContent = 'Ultimi risultati'
-        const myScontriBefore = document.createElement('p');
-        myScontriBefore.classList.add('text-muted', 'myClassModal');
-        mydivBefore.append(titeBefore, myScontriBefore)
-        myModal.appendChild(myModalDialog)
-        myModalDialog.appendChild(myModalContent)
-        myModalContent.append(myModalHead, myModalBody)
-        myModalHead.append(myTitleModal);
-        myModalBody.append(mydivAfter, mydivBefore)
-        myArt.after(myModal);
-
-
-        let caricato = false
-
-        myDivCard.addEventListener('click', async (e) => {
-            if (e.target.closest('button')) return
-            myModal.classList.toggle('d-none')
-
-            if (caricato) return
-            caricato = true
-
-
-
-            const [ultimiEventi, prossimi] = await Promise.all([
-                ultimiScontriGiocati(item.idTeam),
-                prossimiScontri(item.idTeam)
-            ])
-
-   ultimiEventi.length === 0
-    ? myScontriBefore.textContent = 'Nessun risultato disponibile'
-    :myScontriBefore.replaceChildren(...ultimiEventi.map(creaRigaRisultato))
-
-
-            myScontriAfter.textContent = prossimi.length === 0
-                ? 'Nessuna partita in programma'
-                : prossimi
-                    .map(event => `${event.dateEvent}: ${event.strEvent}`)
-        })
-    })
-}
-
-function creaRigaRisultato(event) {
-    const riga = document.createElement('div')
-    riga.append(`${event.strEvent}: `)
-    const badge = document.createElement('span')
-    badge.classList.add('badge', 'text-bg-success')
-    badge.textContent = `${event.intHomeScore ?? '-'} - ${event.intAwayScore ?? '-'}`
-    riga.append(badge)
-    return riga
-}
+                     
+            let caricato = false
     
+            myDivCard.addEventListener('click', async (e) => {
+                if (e.target.closest('button')) return
+                myModal.classList.toggle('d-none')
+    
+                if (caricato) return
+                caricato = true
+                const [ultimiEventi, prossimi] = await Promise.all([
+                    ultimiScontriGiocati(item.idTeam),
+                    prossimiScontri(item.idTeam)
+                ])
+       
+
+
+
+                ultimiEventi.length === 0
+                 ? myScontriBefore.textContent = 'Nessun risultato disponibile'
+                 :myScontriBefore.replaceChildren(...ultimiEventi.map(creaRigaRisultato))
+             
+             
+                         myScontriAfter.textContent = prossimi.length === 0
+                             ? 'Nessuna partita in programma'
+                             : prossimi
+                                 .map(event => `${event.dateEvent}: ${event.strEvent}`)
+                     })
+                 })
+             }
+             
+             function creaRigaRisultato(event) {
+                 const riga = document.createElement('div')
+                 riga.append(`${event.strEvent}: `)
+                 const badge = document.createElement('span')
+                 badge.classList.add('badge', 'text-bg-success')
+                 badge.textContent = `${event.intHomeScore ?? '-'} - ${event.intAwayScore ?? '-'}`
+                 riga.append(badge)
+                 return riga
+             }
+                 
+            
+                 
+             
+            
+
+

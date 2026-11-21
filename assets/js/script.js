@@ -12,6 +12,8 @@ const spinnerSearch = document.querySelector('#spinnerSearch')
 const messContainerSearch = document.querySelector('#messContainerSearch')
 const btnsFilter = document.querySelectorAll('.btnFilter');
 const myIcon = document.querySelector('#toogleDark');
+const myError = document.querySelector('#error');
+const btnClear = document.getElementById('btnClear');
 
 window.addEventListener('load', () => {
     textSquad.value = '';
@@ -39,8 +41,10 @@ textSquad.addEventListener('input', () => {
         spinnerSearch.classList.add('d-none');
         messContainerSearch.classList.remove('d-none');
         return;
+    }else {
+        myError.classList.add('d-none');
     }
-    messContainerSearch?.classList.add('d-none');
+    
     timerRicerca = setTimeout(() => {
         eseguiRicerca(query);
     }, 450);
@@ -54,6 +58,9 @@ async function eseguiRicerca(inputUser) {
         return;
     }
 
+   
+
+
     const richiestaCorrente = ++idUltimaRichiesta;
     spinnerSearch.classList.remove('d-none');
 
@@ -61,6 +68,11 @@ async function eseguiRicerca(inputUser) {
         await SearchSquad(inputUtente);
         if (richiestaCorrente !== idUltimaRichiesta) return;
         stampaCard(listaSquadre, containerCardSearch);
+         const erroreDiRete = !myError.classList.contains('d-none');
+        if (listaSquadre.length === 0 && !erroreDiRete) {
+            myError.textContent = `La squadra "${inputUtente}" non è stata trovata`;
+            myError.classList.remove('d-none');
+    }
     } finally {
         if (richiestaCorrente === idUltimaRichiesta) {
             spinnerSearch.classList.add('d-none');
@@ -127,8 +139,16 @@ btnsFilter.forEach((btn) => {
     });
 });
 
+const toggleClearButton = () => {
+    btnClear.classList.toggle('d-none', textSquad.value.trim() === '');
+}; 
 
+textSquad.addEventListener('input', toggleClearButton);
 
-
-
-
+btnClear.addEventListener('click', () => {
+    textSquad.value = '';
+    toggleClearButton();
+    textSquad.focus();
+    myError.classList.add('d-none');
+    listaSquadre.length = 0;
+});
