@@ -1,5 +1,5 @@
-import { myPreferit} from '../funzioni/funzioni.js'
-import { SearchSquad} from '../funzioni/funzioni.js'
+import { myPreferit } from '../funzioni/funzioni.js'
+import { SearchSquad } from '../funzioni/funzioni.js'
 import { stampaCard } from '../creatElement/creatElement.js'
 import { listaSquadre } from '../funzioni/funzioni.js'
 import { cardPreferit } from '../creatElement/creatElement.js'
@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
     applicaTema(localStorage.getItem('tema') ?? 'light');
     if (myPreferit.length === 0) {
         messContainerPref?.classList.remove('d-none');
-    } 
+    }
 });
 
 let timerRicerca;
@@ -66,7 +66,7 @@ async function eseguiRicerca(inputUser) {
             spinnerSearch.classList.add('d-none');
         }
     }
-}    
+}
 
 
 
@@ -81,11 +81,11 @@ checkNativeSwitch.addEventListener('change', () => {
 function applicaTema(tema) {
     document.documentElement.setAttribute('data-bs-theme', tema);
     checkNativeSwitch.checked = tema === 'dark';
-
     myIcon.classList.toggle('fa-moon', tema === 'light');
     myIcon.classList.toggle('fa-sun', tema === 'dark');
     myIcon.classList.toggle('text-dark', tema === 'light');
 }
+
 
 function aggiornaPreferiti() {
     const squadreFiltrate = sportSelezionato
@@ -110,13 +110,12 @@ let sportSelezionato = null;
 btnsFilter.forEach((btn) => {
     btn.addEventListener('click', () => {
         const sport = btn.textContent.trim();
-
         if (sport !== 'Tutti' && sportSelezionato === sport) {
             return;
         }
 
-btnsFilter.forEach((b) => b.classList.remove('active'));
 
+        btnsFilter.forEach((b) => b.classList.remove('active'));
         if (sport === 'Tutti') {
             sportSelezionato = null;
             btn.classList.add('active');
@@ -124,10 +123,11 @@ btnsFilter.forEach((b) => b.classList.remove('active'));
             sportSelezionato = sport;
             btn.classList.add('active');
         }
-
         aggiornaPreferiti();
     });
 });
+
+
 
 
 

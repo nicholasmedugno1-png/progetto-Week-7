@@ -112,10 +112,10 @@ export function cardPreferit(array, contenitorePadre) {
             caricato = true
             myScontriBefore.textContent = 'Caricamento...';
             const ultimiEventi = await ultimiScontriGiocati(item.idTeam);
-            myScontriBefore.textContent = ultimiEventi.length === 0
-                ? 'Nessun risultato disponibile'
-                : ultimiEventi
-                    .map(event => `${event.strEvent}: ${event.intHomeScore} - ${event.intAwayScore}`)
+              ultimiEventi.length === 0
+    ? myScontriBefore.textContent = 'Nessun risultato disponibile'
+    :myScontriBefore.replaceChildren(...ultimiEventi.map(creaRigaRisultato))
+
 
             const prossimi = await prossimiScontri(item.idTeam);
             myScontriAfter.textContent = prossimi.length === 0
@@ -204,7 +204,6 @@ export function stampaCard(array, contenitorePadre) {
         const myScontriBefore = document.createElement('p');
         myScontriBefore.classList.add('text-muted', 'myClassModal');
         mydivBefore.append(titeBefore, myScontriBefore)
-
         myModal.appendChild(myModalDialog)
         myModalDialog.appendChild(myModalContent)
         myModalContent.append(myModalHead, myModalBody)
@@ -229,10 +228,10 @@ export function stampaCard(array, contenitorePadre) {
                 prossimiScontri(item.idTeam)
             ])
 
-            myScontriBefore.textContent = ultimiEventi.length === 0
-                ? 'Nessun risultato disponibile'
-                : ultimiEventi
-                    .map(event => `${event.strEvent}: ${event.intHomeScore} - ${event.intAwayScore}`)
+   ultimiEventi.length === 0
+    ? myScontriBefore.textContent = 'Nessun risultato disponibile'
+    :myScontriBefore.replaceChildren(...ultimiEventi.map(creaRigaRisultato))
+
 
             myScontriAfter.textContent = prossimi.length === 0
                 ? 'Nessuna partita in programma'
@@ -241,3 +240,14 @@ export function stampaCard(array, contenitorePadre) {
         })
     })
 }
+
+function creaRigaRisultato(event) {
+    const riga = document.createElement('div')
+    riga.append(`${event.strEvent}: `)
+    const badge = document.createElement('span')
+    badge.classList.add('badge', 'text-bg-success')
+    badge.textContent = `${event.intHomeScore ?? '-'} - ${event.intAwayScore ?? '-'}`
+    riga.append(badge)
+    return riga
+}
+    
